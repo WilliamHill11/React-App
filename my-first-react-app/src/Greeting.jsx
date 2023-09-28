@@ -62,31 +62,80 @@
 //   );
 // }
 
-function List(props) {
-  if (!props.animals) {
-    return <div>Loading...</div>;
-  }
+// function List(props) {
+//   if (!props.animals) {
+//     return <div>Loading...</div>;
+//   }
 
-  if (props.animals.length === 0) {
-    return <div>There are no animals in the list!</div>;
-  }
+//   if (props.animals.length === 0) {
+//     return <div>There are no animals in the list!</div>;
+//   }
+
+//   return (
+//     <ul>
+//       {props.animals.map((animal) => {
+//         return <li key={animal}>{animal}</li>;
+//       })}
+//     </ul>
+//   );
+// }
+
+// function Greeting() {
+//   const animals = [];
+
+//   return (
+//     <div>
+//       <h1>Animals: </h1>
+//       <List animals={animals} />
+//     </div>
+//   );
+// }
+
+// function Button(props) {
+//   const buttonStyle = {
+//     color: props.color,
+//     fontSize: props.fontSize + 'px',
+//   };
+
+//   return <button style={buttonStyle}>{props.text}</button>;
+// }
+
+// function Greeting() {
+//   return (
+//     <div>
+//       <Button text="Click Me!" color="blue" fontSize={12} />
+//       <Button text="Don't Click Me!" color="red" fontSize={12} />
+//       <Button text="Click Me!" color="blue" fontSize={20} />
+//     </div>
+//   );
+// }
+
+function Button({
+  text = 'Click Me!',
+  color = 'blue',
+  fontSize = 12,
+  handleClick,
+}) {
+  const buttonStyle = {
+    color: color,
+    fontSize: fontSize + 'px',
+  };
 
   return (
-    <ul>
-      {props.animals.map((animal) => {
-        return <li key={animal}>{animal}</li>;
-      })}
-    </ul>
+    <button onClick={handleClick} style={buttonStyle}>
+      {text}
+    </button>
   );
 }
 
 function Greeting() {
-  const animals = [''];
+  const handleButtonClick = () => {
+    window.location.href = 'http://www.google.com';
+  };
 
   return (
     <div>
-      <h1>Animals: </h1>
-      <List animals={animals} />
+      <Button s={handleButtonClick} />
     </div>
   );
 }
