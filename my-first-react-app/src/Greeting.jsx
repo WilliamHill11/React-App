@@ -110,32 +110,64 @@
 //   );
 // }
 
-function Button({
-  text = 'Click Me!',
-  color = 'blue',
-  fontSize = 12,
-  handleClick,
-}) {
-  const buttonStyle = {
-    color: color,
-    fontSize: fontSize + 'px',
-  };
+// function Button({
+//   text = 'Click Me!',
+//   color = 'blue',
+//   fontSize = 12,
+//   handleClick,
+// }) {
+//   const buttonStyle = {
+//     color: color,
+//     fontSize: fontSize + 'px',
+//   };
 
+//   return (
+//     <button onClick={handleClick} style={buttonStyle}>
+//       {text}
+//     </button>
+//   );
+// }
+
+// function Greeting() {
+//   const handleButtonClick = () => {
+//     window.location.href = 'http://www.google.com';
+//   };
+
+//   return (
+//     <div>
+//       <Button s={handleButtonClick} />
+//     </div>
+//   );
+// }
+
+function Card({ children }) {
   return (
-    <button onClick={handleClick} style={buttonStyle}>
-      {text}
-    </button>
+    <div className="card">
+      <div className="card-content">{children}</div>
+    </div>
   );
 }
 
 function Greeting() {
-  const handleButtonClick = () => {
-    window.location.href = 'http://www.google.com';
-  };
-
   return (
     <div>
-      <Button s={handleButtonClick} />
+      <Card>
+        <h1>Photo</h1>
+        <img
+          className="avatar"
+          src="https://i.imgur.com/OKS67lhm.jpg"
+          alt="Aklilu Lemma"
+          width={100}
+          height={100}
+        />
+      </Card>
+      <Card>
+        <h1>About</h1>
+        <p>
+          Aklilu Lemma was a distinguished Ethiopian scientist who discovered a
+          natural treatment to schistosomiasis.
+        </p>
+      </Card>
     </div>
   );
 }
