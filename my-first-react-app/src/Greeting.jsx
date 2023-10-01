@@ -140,34 +140,69 @@
 //   );
 // }
 
-function Card({ children }) {
-  return (
-    <div className="card">
-      <div className="card-content">{children}</div>
-    </div>
-  );
-}
+// function Card({ children }) {
+//   return (
+//     <div className="card">
+//       <div className="card-content">{children}</div>
+//     </div>
+//   );
+// }
+
+// function Greeting() {
+//   return (
+//     <div>
+//       <Card>
+//         <h1>Photo</h1>
+//         <img
+//           className="avatar"
+//           src="https://i.imgur.com/OKS67lhm.jpg"
+//           alt="Aklilu Lemma"
+//           width={100}
+//           height={100}
+//         />
+//       </Card>
+//       <Card>
+//         <h1>About</h1>
+//         <p>
+//           Aklilu Lemma was a distinguished Ethiopian scientist who discovered a
+//           natural treatment to schistosomiasis.
+//         </p>
+//       </Card>
+//     </div>
+//   );
+// }
+
+import React, { useState } from 'react';
+import './App.css';
+
+const COLORS = ['pink', 'green', 'blue', 'yellow', 'purple'];
 
 function Greeting() {
+  const [backgroundColor, setBackgroundColor] = useState(COLORS[0]);
+  const [backgroundCount, setBackgroundCount] = useState(0);
+
+  const onButtonClick = (color) => () => {
+    setBackgroundColor(color);
+    console.log(setBackgroundCount(backgroundCount + 1));
+  };
+
   return (
-    <div>
-      <Card>
-        <h1>Photo</h1>
-        <img
-          className="avatar"
-          src="https://i.imgur.com/OKS67lhm.jpg"
-          alt="Aklilu Lemma"
-          width={100}
-          height={100}
-        />
-      </Card>
-      <Card>
-        <h1>About</h1>
-        <p>
-          Aklilu Lemma was a distinguished Ethiopian scientist who discovered a
-          natural treatment to schistosomiasis.
-        </p>
-      </Card>
+    <div
+      className="App"
+      style={{
+        backgroundColor,
+      }}
+    >
+      {COLORS.map((color) => (
+        <button
+          type="button"
+          key={color}
+          onClick={onButtonClick(color)}
+          className={backgroundColor === color ? 'selected' : ''}
+        >
+          {color}
+        </button>
+      ))}
     </div>
   );
 }
