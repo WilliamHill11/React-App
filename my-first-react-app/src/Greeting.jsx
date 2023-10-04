@@ -172,38 +172,103 @@
 //   );
 // }
 
+// import React, { useState } from 'react';
+// import './App.css';
+
+// const COLORS = ['pink', 'green', 'blue', 'yellow', 'purple'];
+
+// function Greeting() {
+//   const [backgroundColor, setBackgroundColor] = useState(COLORS[0]);
+//   const [backgroundCount, setBackgroundCount] = useState(0);
+
+//   const onButtonClick = (color) => () => {
+//     setBackgroundColor(color);
+//     setBackgroundCount(backgroundCount + 1);
+//   };
+
+//   return (
+//     <div
+//       className="App"
+//       style={{
+//         backgroundColor,
+//       }}
+//     >
+//       {COLORS.map((color) => (
+//         <button
+//           type="button"
+//           key={color}
+//           onClick={onButtonClick(color)}
+//           className={backgroundColor === color ? 'selected' : ''}
+//         >
+//           {color}
+//         </button>
+//       ))}
+//     </div>
+//   );
+// }
+
+// import React, { useState } from 'react';
+// import './App.css';
+
+// function Greeting() {
+//   const [person, setPerson] = useState({ name: 'John', age: 100 });
+
+//   // BAD - Don't do this!
+//   // const handleIncreaseAge = () => {
+//   //   // mutating the current state object
+//   //   person.age = person.age + 1;
+//   //   setPerson(person);
+//   // };
+
+//   // GOOD - Do this!
+//   const handleIncreaseAge = () => {
+//     // copy the existing person object into a new object
+//     // while updating the age property
+//     const newPerson = { ...person, age: person.age + 1 };
+//     setPerson(newPerson);
+//   };
+
+//   return (
+//     <>
+//       <h1>{person.name}</h1>
+//       <h2>{person.age}</h2>
+//       <button onClick={handleIncreaseAge}>Increase age</button>
+//     </>
+//   );
+// }
+
 import React, { useState } from 'react';
 import './App.css';
 
-const COLORS = ['pink', 'green', 'blue', 'yellow', 'purple'];
-
 function Greeting() {
-  const [backgroundColor, setBackgroundColor] = useState(COLORS[0]);
-  const [backgroundCount, setBackgroundCount] = useState(0);
-
-  const onButtonClick = (color) => () => {
-    setBackgroundColor(color);
-    console.log(setBackgroundCount(backgroundCount + 1));
-  };
-
   return (
-    <div
-      className="App"
-      style={{
-        backgroundColor,
-      }}
-    >
-      {COLORS.map((color) => (
-        <button
-          type="button"
-          key={color}
-          onClick={onButtonClick(color)}
-          className={backgroundColor === color ? 'selected' : ''}
-        >
-          {color}
-        </button>
-      ))}
-    </div>
+    <>
+      <h2>Almaty, Kazakhstan</h2>
+      <Panel title="About" isActive={true}>
+        With a population of about 2 million, Almaty is Kazakhstan's largest
+        city. From 1929 to 1997, it was its capital city.
+      </Panel>
+      <Panel title="Etymology" isActive={true}>
+        The name comes from алма, the Kazakh word for "apple" and is often
+        translated as "full of apples". In fact, the region surrounding Almaty
+        is thought to be the ancestral home of the apple, and the wild Malus
+        sieversii is considered a likely candidate for the ancestor of the
+        modern domestic apple.
+      </Panel>
+    </>
+  );
+}
+
+function Panel({ title, children, isActive }) {
+  return (
+    <section className="panel">
+      <h3>{title}</h3>
+      {isActive ? (
+        <p>{children}</p>
+      ) : (
+        <button onClick={() => setIsActive(true)}>Show</button>
+      )}
+    </section>
   );
 }
 
