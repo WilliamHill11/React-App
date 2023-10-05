@@ -237,39 +237,130 @@
 //   );
 // }
 
-import React, { useState } from 'react';
-import './App.css';
+// import React, { useState } from 'react';
+// import './App.css';
 
-function Greeting() {
+// function Greeting() {
+//   const [activeIndex, setActiveIndex] = useState(0);
+//   return (
+//     <>
+//       <h2>Almaty, Kazakhstan</h2>
+//       <Panel
+//         title="About"
+//         isActive={activeIndex === 0}
+//         onShow={() => setActiveIndex(0)}
+//       >
+//         With a population of about 2 million, Almaty is Kazakhstan's largest
+//         city. From 1929 to 1997, it was its capital city.
+//       </Panel>
+//       <Panel
+//         title="Etymology"
+//         isActive={activeIndex === 1}
+//         onShow={() => setActiveIndex(1)}
+//       >
+//         The name comes from алма, the Kazakh word for "apple" and is often
+//         translated as "full of apples". In fact, the region surrounding Almaty
+//         is thought to be the ancestral home of the apple, and the wild Malus
+//         sieversii is considered a likely candidate for the ancestor of the
+//         modern domestic apple.
+//       </Panel>
+//     </>
+//   );
+// }
+
+// function Panel({ title, children, isActive, onShow }) {
+//   return (
+//     <section className="panel">
+//       <h3>{title}</h3>
+//       {isActive ? <p>{children}</p> : <button onClick={onShow}>Show</button>}
+//     </section>
+//   );
+// }
+
+function ProductCategoryRow({ category }) {
   return (
-    <>
-      <h2>Almaty, Kazakhstan</h2>
-      <Panel title="About" isActive={true}>
-        With a population of about 2 million, Almaty is Kazakhstan's largest
-        city. From 1929 to 1997, it was its capital city.
-      </Panel>
-      <Panel title="Etymology" isActive={true}>
-        The name comes from алма, the Kazakh word for "apple" and is often
-        translated as "full of apples". In fact, the region surrounding Almaty
-        is thought to be the ancestral home of the apple, and the wild Malus
-        sieversii is considered a likely candidate for the ancestor of the
-        modern domestic apple.
-      </Panel>
-    </>
+    <tr>
+      <th colSpan="2">{category}</th>
+    </tr>
   );
 }
 
-function Panel({ title, children, isActive }) {
-  return (
-    <section className="panel">
-      <h3>{title}</h3>
-      {isActive ? (
-        <p>{children}</p>
-      ) : (
-        <button onClick={() => setIsActive(true)}>Show</button>
-      )}
-    </section>
+function ProductRow({ product }) {
+  const name = product.stocked ? (
+    product.name
+  ) : (
+    <span style={{ color: 'red' }}>{product.name}</span>
   );
+
+  return (
+    <tr>
+      <td>{name}</td>
+      <td>{product.price}</td>
+    </tr>
+  );
+}
+
+function ProductTable({ products }) {
+  const rows = [];
+  let lastCategory = null;
+
+  products.forEach((product) => {
+    if (product.category !== lastCategory) {
+      rows.push(
+        <ProductCategoryRow
+          category={product.category}
+          key={product.category}
+        />
+      );
+    }
+    rows.push(<ProductRow product={product} key={product.name} />);
+    lastCategory = product.category;
+  });
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>{rows}</tbody>
+    </table>
+  );
+}
+
+function SearchBar() {
+  return (
+    <form>
+      <input type="text" placeholder="Search..." />
+      <label>
+        <input type="checkbox" /> Only show products in stock
+      </label>
+    </form>
+  );
+}
+
+function FilterableProductTable({ products }) {
+  return (
+    <div>
+      <SearchBar />
+      <ProductTable products={products} />
+    </div>
+  );
+}
+
+const PRODUCTS = [
+  { category: 'Fruits', price: '$1', stocked: true, name: 'Apple' },
+  { category: 'Fruits', price: '$1', stocked: true, name: 'Dragonfruit' },
+  { category: 'Fruits', price: '$2', stocked: false, name: 'Passionfruit' },
+  { category: 'Vegetables', price: '$2', stocked: true, name: 'Spinach' },
+  { category: 'Vegetables', price: '$4', stocked: false, name: 'Pumpkin' },
+  { category: 'Vegetables', price: '$1', stocked: true, name: 'Peas' },
+];
+
+function Greeting() {
+  return <FilterableProductTable products={PRODUCTS} />;
 }
 
 export default Greeting;
