@@ -122,26 +122,18 @@
 //   );
 // }
 
-import { useState, useEffect } from 'react';
-import './App.css';
+import React, { useEffect, useState } from 'react';
 
 function App() {
-  const [catFact, setCatFact] = useState('');
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    fetch('https://catfact.ninja/fact')
-      .then((res) => res.json())
-      .then((data) => {
-        setCatFact(data.fact);
-      });
+    setInterval(() => {
+      setCounter((count) => count + 1);
+    }, 1000);
   }, []);
 
-  return (
-    <div className="App">
-      <button>Generate Cat Fact</button>
-      <p> {catFact} </p>
-    </div>
-  );
+  return <p>{counter} seconds have passed.</p>;
 }
 
 export default App;
