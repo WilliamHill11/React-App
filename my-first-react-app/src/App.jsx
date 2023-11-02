@@ -122,22 +122,47 @@
 //   );
 // }
 
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createConnection } from './chat';
 
-function App() {
-  const [counter, setCounter] = useState(0);
+function ChatRoom({ roomId }) {
+  // roomId is reactive
+  const [serverUrl, setServerUrl] = useState('https://localhost:1234'); // serverUrl is reactive
 
   useEffect(() => {
-    const key = setInterval(() => {
-      setCounter((count) => count + 1);
-    }, 1000);
+    const connection = createConnection(serverUrl, roomId);
+    connection.connect();
+    return () => connection.disconnect();
+  }, [serverUrl, roomId]); // <-- Something's wrong here!
 
-    return () => {
-      clearInterval(key);
-    };
-  }, []);
-
-  return <p>{counter} seconds have passed.</p>;
+  return (
+    <>
+      <label>
+        Server URL:{' '}
+        <input
+          value={serverUrl}
+          onChange={(e) => setServerUrl(e.target.value)}
+        />
+      </label>
+      <h1>Welcome to the {roomId} room!</h1>
+    </>
+  );
 }
 
-export default App;
+export default function App() {
+  const [roomId, setRoomId] = useState('general');
+  return (
+    <>
+      <label>
+        Choose the chat room:{' '}
+        <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
+          <option value="general">general</option>
+          <option value="travel">travel</option>
+          <option value="music">music</option>
+        </select>
+      </label>
+      <hr />
+      <ChatRoom roomId={roomId} />
+    </>
+  );
+}
