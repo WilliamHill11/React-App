@@ -125,32 +125,20 @@
 import { useState, useEffect } from 'react';
 import { createConnection } from './chat';
 
-function ChatRoom({ roomId }) {
-  // roomId is reactive
-  const [serverUrl, setServerUrl] = useState('https://localhost:1234'); // serverUrl is reactive
+const serverUrl = 'https://localhost:5173';
 
+function ChatRoom({ roomId }) {
   useEffect(() => {
     const connection = createConnection(serverUrl, roomId);
     connection.connect();
     return () => connection.disconnect();
-  }, [serverUrl, roomId]); // <-- Something's wrong here!
-
-  return (
-    <>
-      <label>
-        Server URL:{' '}
-        <input
-          value={serverUrl}
-          onChange={(e) => setServerUrl(e.target.value)}
-        />
-      </label>
-      <h1>Welcome to the {roomId} room!</h1>
-    </>
-  );
+  }, [roomId]);
+  return <h1>Welcome to the {roomId} room!</h1>;
 }
 
 export default function App() {
   const [roomId, setRoomId] = useState('general');
+  const [show, setShow] = useState(false);
   return (
     <>
       <label>
@@ -161,8 +149,11 @@ export default function App() {
           <option value="music">music</option>
         </select>
       </label>
-      <hr />
-      <ChatRoom roomId={roomId} />
+      <button onClick={() => setShow(!show)}>
+        {show ? 'Close chat' : 'Open chat'}
+      </button>
+      {show && <hr />}
+      {show && <ChatRoom roomId={roomId} />}
     </>
   );
 }
