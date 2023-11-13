@@ -1,5 +1,5 @@
-// import { useState } from 'react';
 // import './App.css';
+// import { useState } from 'react';
 // import Task from './Task';
 
 // function App() {
@@ -16,6 +16,7 @@
 //       taskName: newTask,
 //       completed: false,
 //     };
+
 //     setTodoList([...todoList, task]);
 //   };
 
@@ -39,7 +40,7 @@
 //     <div className="App">
 //       <div className="addTask">
 //         <input onChange={handleChange} />
-//         <button onClick={addTask}> Add Task</button>
+//         <button onClick={addTask}>addTask</button>
 //       </div>
 //       <div className="list">
 //         {todoList.map((task) => {
@@ -47,9 +48,9 @@
 //             <Task
 //               taskName={task.taskName}
 //               id={task.id}
-//               completed={task.completed}
 //               deleteTask={deleteTask}
 //               completeTask={completeTask}
+//               completed={task.completed}
 //             />
 //           );
 //         })}
@@ -58,102 +59,58 @@
 //   );
 // }
 
-// import { useState } from 'react';
-// import './App.css';
-// import Task from './Task';
+// export default App;
 
-// function App() {
-//   const [todoList, setTodoList] = useState([]);
-//   const [newTask, setNewTask] = useState('');
+import React, { Component } from 'react';
 
-//   const handleChange = (event) => {
-//     setNewTask(event.target.value);
-//   };
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-//   const addTask = () => {
-//     const task = {
-//       id: todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1,
-//       taskName: newTask,
-//       completed: false,
-//     };
+    this.state = {
+      todos: [],
+      inputVal: '',
+    };
+  }
 
-//     setTodoList([...todoList, task]);
-//   };
+  handleInputChange = (e) => {
+    this.setState((state) => ({
+      ...state,
+      inputVal: e.target.value,
+    }));
+  };
 
-//   const deleteTask = (id) => {
-//     setTodoList(todoList.filter((newTask) => id !== newTask.id));
-//   };
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.setState((state) => ({
+      todos: state.todos.concat(state.inputVal),
+      inputVal: '',
+    }));
+  };
 
-//   const completeTask = (id) => {
-//     setTodoList(
-//       todoList.map((task) => {
-//         console.log(task, 'task');
-//         if (task.id === id) {
-//           return { ...task, completed: true };
-//         } else {
-//           return task;
-//         }
-//       })
-//     );
-//   };
-
-//   return (
-//     <div className="App">
-//       <div className="addTask">
-//         <input type="text" onChange={handleChange} />
-//         <button onClick={addTask}>Add Task</button>
-//       </div>
-//       <div className="list">
-//         <div>
-//           {todoList.map((task) => {
-//             return (
-//               <Task
-//                 taskName={task.taskName}
-//                 id={task.id}
-//                 deleteTask={deleteTask}
-//                 completeTask={completeTask}
-//                 completed={task.completed}
-//               />
-//             );
-//           })}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-import { useState, useEffect } from 'react';
-import { createConnection } from './chat';
-
-const serverUrl = 'https://localhost:5173';
-
-function ChatRoom({ roomId }) {
-  useEffect(() => {
-    const connection = createConnection(serverUrl, roomId);
-    connection.connect();
-    return () => connection.disconnect();
-  }, [roomId]);
-  return <h1>Welcome to the {roomId} room!</h1>;
+  render() {
+    return (
+      <section>
+        <h3>{this.props.name}</h3>
+        <form onSubmit={this.handleSubmit}>
+          <label htmlFor="task-entry">Enter a task: </label>
+          <input
+            type="text"
+            name="task-entry"
+            value={this.state.inputVal}
+            onChange={this.handleInputChange}
+          />
+          <button type="submit">Submit</button>
+        </form>
+        <h4>All the tasks!</h4>
+        <ul>
+          {this.state.todos.map((todo) => (
+            <li key={todo}>{todo}</li>
+          ))}
+        </ul>
+      </section>
+    );
+  }
 }
 
-export default function App() {
-  const [roomId, setRoomId] = useState('general');
-  const [show, setShow] = useState(false);
-  return (
-    <>
-      <label>
-        Choose the chat room:{' '}
-        <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
-          <option value="general">general</option>
-          <option value="travel">travel</option>
-          <option value="music">music</option>
-        </select>
-      </label>
-      <button onClick={() => setShow(!show)}>
-        {show ? 'Close chat' : 'Open chat'}
-      </button>
-      {show && <hr />}
-      {show && <ChatRoom roomId={roomId} />}
-    </>
-  );
-}
+export default App;
