@@ -1,6 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
+import { expect, it } from 'vitest';
+
+it('toUpperCase', () => {
+  const result = toUpperCase('foobar');
+  expect(result).toMatchSnapshot();
+});
 
 describe('App component', () => {
   it('renders magnificent monkeys', () => {
