@@ -1,28 +1,33 @@
+import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from './App';
-import { expect, it } from 'vitest';
+import CustomButton from './CustomButton';
 
-it('toUpperCase', () => {
-  const result = toUpperCase('foobar');
-  expect(result).toMatchSnapshot();
-});
+describe('CustomButton', () => {
+  it("should render a button with the text 'Click me'", () => {
+    render(<CustomButton onClick={() => {}} />);
 
-describe('App component', () => {
-  it('renders magnificent monkeys', () => {
-    // since screen does not have the container property, we'll destructure render to obtain a container for this test
-    const { container } = render(<App />);
-    expect(container).toMatchSnapshot();
+    const button = screen.getByRole('button', { name: 'Click me' });
+
+    expect(button).toBeInTheDocument();
   });
 
-  it('renders radical rhinos after button click', async () => {
+  it('should call the onClick function when clicked', async () => {
+    const onClick = vi.fn();
     const user = userEvent.setup();
+    render(<CustomButton onClick={onClick} />);
 
-    render(<App />);
-    const button = screen.getByRole('button', { name: 'Click Me' });
+    const button = screen.getByRole('button', { name: 'Click me' });
 
     await user.click(button);
 
-    expect(screen.getByRole('heading').textContent).toMatch(/radical rhinos/i);
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it("should not call the onClick function when it isn't clicked", async () => {
+    const onClick = vi.fn();
+    render(<CustomButton onClick={onClick} />);
+
+    expect(onClick).not.toHaveBeenCalled();
   });
 });
