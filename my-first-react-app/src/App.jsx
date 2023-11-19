@@ -102,23 +102,16 @@
 
 // export default App;
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 
-const App = () => {
-  const [heading, setHeading] = useState('Magnificent Monkeys');
+import PropTypes from 'prop-types';
 
-  const clickHandler = () => {
-    setHeading('Radical Rhinos');
-  };
+const App = (props) => {
+  return <div>{props.name}</div>;
+};
 
-  return (
-    <>
-      <button type="button" onClick={clickHandler}>
-        Click Me
-      </button>
-      <h1>{heading}</h1>
-    </>
-  );
+RenderName.propTypes = {
+  name: PropTypes.string,
 };
 
 export default App;
