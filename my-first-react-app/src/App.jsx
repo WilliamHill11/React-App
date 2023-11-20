@@ -100,18 +100,26 @@
 //   );
 // };
 
-// export default App;
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import './App.css';
+import Home from './Pages/Home';
+import About from './Pages/About';
+import Profile from './Pages/Profile';
+import ErrorPage from './Pages/ErrorPage';
+import Nav from './Nav';
 
-// import React, { useState } from 'react';
-
-import PropTypes from 'prop-types';
-
-const App = (props) => {
-  return <div>{props.name}</div>;
-};
-
-RenderName.propTypes = {
-  name: PropTypes.string,
-};
-
+function App() {
+  return (
+    <Router>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/profile/:username" element={<Profile />} />
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+      <div>Footer</div>
+    </Router>
+  );
+}
 export default App;
