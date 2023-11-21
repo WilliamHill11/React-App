@@ -107,6 +107,7 @@ import About from './Pages/About';
 import Profile from './Pages/Profile';
 import ErrorPage from './Pages/ErrorPage';
 import Nav from './Nav';
+import ProfileIndex from './Pages/ProfileIndex';
 
 function App() {
   return (
@@ -115,7 +116,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/profile/" element={<Profile />} />
+        <Route path="/profile/:username" element={<ProfileIndex />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <div>Footer</div>
