@@ -100,28 +100,63 @@
 //   );
 // };
 
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import './App.css';
-import Home from './Pages/Home';
-import About from './Pages/About';
-import Profile from './Pages/Profile';
-import ErrorPage from './Pages/ErrorPage';
-import Nav from './Nav';
-import ProfileIndex from './Pages/ProfileIndex';
+// import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+// import './App.css';
+// import Home from './Pages/Home';
+// import About from './Pages/About';
+// import Profile from './Pages/Profile';
+// import ErrorPage from './Pages/ErrorPage';
+// import Nav from './Nav';
+// import ProfileIndex from './Pages/ProfileIndex';
 
-function App() {
+// function App() {
+//   return (
+//     <Router>
+//       <Nav />
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/about" element={<About />} />
+//         <Route path="/profile/" element={<Profile />} />
+//         <Route path="/profile/:username" element={<ProfileIndex />} />
+//         <Route path="*" element={<ErrorPage />} />
+//       </Routes>
+//       <div>Footer</div>
+//     </Router>
+//   );
+// }
+// export default App;
+
+import { useEffect, useState } from 'react';
+
+const App = () => {
+  const [imageURL, setImageURL] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/photos', { mode: 'cors' })
+      .then((response) => {
+        if (response.status >= 400) {
+          throw new Error('server error');
+        }
+        return response.json();
+      })
+      .then((response) => setImageURL(response[0].url))
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (error) return <p>A network error was encountered</p>;
+  if (loading) return <p>Loading...</p>;
+
   return (
-    <Router>
-      <Nav />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/profile/" element={<Profile />} />
-        <Route path="/profile/:username" element={<ProfileIndex />} />
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-      <div>Footer</div>
-    </Router>
+    imageURL && (
+      <>
+        <h1>An image</h1>
+        <img src={imageURL} alt={'placeholder text'} />
+      </>
+    )
   );
-}
+};
+
 export default App;
