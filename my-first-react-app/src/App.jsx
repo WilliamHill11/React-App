@@ -126,37 +126,30 @@
 // }
 // export default App;
 
-import { useEffect, useState } from 'react';
+import './App.css';
+import useFetch from './useFetch';
 
-const App = () => {
-  const [imageURL, setImageURL] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+function App() {
+  const {
+    data: joke,
+    loading,
+    error,
+    refetch,
+  } = useFetch('https://v2.jokeapi.dev/joke/Any');
 
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/photos', { mode: 'cors' })
-      .then((response) => {
-        if (response.status >= 400) {
-          throw new Error('server error');
-        }
-        return response.json();
-      })
-      .then((response) => setImageURL(response[0].url))
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
-  }, []);
+  if (loading) return <h1> LOADING...</h1>;
 
-  if (error) return <p>A network error was encountered</p>;
-  if (loading) return <p>Loading...</p>;
+  if (error) console.log(error);
 
   return (
-    imageURL && (
-      <>
-        <h1>An image</h1>
-        <img src={imageURL} alt={'placeholder text'} />
-      </>
-    )
+    <div className="App">
+      <h1>
+        {joke?.setup} : {joke?.delivery}
+      </h1>
+
+      <button onClick={refetch}> Refetch</button>
+    </div>
   );
-};
+}
 
 export default App;
